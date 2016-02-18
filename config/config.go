@@ -1,25 +1,42 @@
 package config
 
 import (
-	"io/ioutil"
+	"../utils"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 type Codes struct {
-	Weather map[string]string
+	Weather    map[string]string
+	Visibility map[string]string
 }
 
-var(
+type ForecastLongTerm struct {
+	RegionalFcst struct {
+		FcstPeriods struct {
+			Period []struct {
+				Paragraph []struct {
+					Text  string `json:"$"`
+					Title string `json:"title"`
+				} `json:"Paragraph"`
+				ID string `json:"id"`
+			} `json:"Period"`
+		} `json:"FcstPeriods"`
+		CreatedOn string `json:"createdOn"`
+		IssuedAt  string `json:"issuedAt"`
+		RegionID  string `json:"regionId"`
+	} `json:"RegionalFcst"`
+}
+
+var (
 	WeatherCodes = &Codes{}
 )
 
 func init() {
-	configYaml, readErr := ioutil.ReadFile("codes.yaml")
-	if readErr != nil {
-		return
-	}
+	configYaml, readErr := ioutil.ReadFile("config/codes.yaml")
+	utils.ErrorPanic(readErr)
+
 	yamlErr := yaml.Unmarshal(configYaml, WeatherCodes)
-	if yamlErr != nil {
-		return
-	}
+	utils.ErrorPanic(yamlErr)
+
 }
