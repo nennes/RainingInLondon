@@ -4,66 +4,39 @@
         <center>
             <h1>London Weather</h1>
 
-            <p>Data generated at: {{.ForecastLongTerm.RegionalFcst.CreatedOn}}</p>
+            <table border="0">
+                <tr>
+                    <td>Data created on</td>
+                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
+                </tr>
+                <tr>
+                    <td>Data issued at</td>
+                    <td>{{.ForecastLongTerm.RegionalFcst.IssuedAt}}</td>
+                </tr>
+            </table>
 
             <table border="0">
                 <tbody>
-                <tr>
-                    <td>
-                        <table border="0">
-                            <tbody>
-                                <tr>
-                                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                    <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="0">
-                            <tbody>
-                            <tr>
-                                <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="0">
-                        <tbody>
+                {{with .ForecastLongTerm.RegionalFcst.FcstPeriods.Period}}
+                    {{range .}}
                         <tr>
-                            <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                            <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
+                            <td>
+                                <table border="0">
+                                    <tbody>
+                                        {{with .Paragraph}}
+                                            {{range .}}
+                                                <tr>
+                                                    <td>{{.Title}}</td>
+                                                    <td>{{.Text}}</td>
+                                                </tr>
+                                            {{end}}
+                                        {{end}}
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
-                        </tbody>
-                    </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="0">
-                            <tbody>
-                            <tr>
-                                <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                                <td>{{.ForecastLongTerm.RegionalFcst.CreatedOn}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+                    {{end}}
+                {{end}}
                 </tbody>
             </table>
 
