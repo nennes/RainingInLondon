@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./config"
-	"./utils"
+	"github.com/nennes/RainingInLondon/config"
+	"github.com/nennes/RainingInLondon/utils"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -14,7 +14,6 @@ import (
 )
 
 var (
-	httpAddr    = flag.String("http", ":8080", "Listen address")
 	pollPeriod  = flag.Duration("poll", 5*time.Minute, "Polling period")
 	forecastURL = "http://datapoint.metoffice.gov.uk/public/data/txt/wxfcs/regionalforecast/json/514"
 )
@@ -24,8 +23,13 @@ func main() {
 	tmpl, err := loadTemplate("main")
 	utils.ErrorPanic(err)
 
+	port := (os.Getenv("PORT"))
+	if len(port) == 0 {
+		port = "8080"
+	}
+
 	http.Handle("/", NewServer(tmpl, *pollPeriod))
-	utils.ErrorPanic(http.ListenAndServe(*httpAddr, nil))
+	utils.ErrorPanic(http.ListenAndServe(":" + port , nil))
 }
 
 func loadTemplate(name string) (*template.Template, error) {

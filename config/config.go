@@ -1,8 +1,8 @@
 package config
 
 import (
-	"../utils"
-	"gopkg.in/yaml.v2"
+	"github.com/nennes/RainingInLondon/Godeps/_workspace/src/gopkg.in/yaml.v2"
+	"github.com/nennes/RainingInLondon/utils"
 	"io/ioutil"
 )
 
