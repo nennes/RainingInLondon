@@ -44,6 +44,7 @@ func loadTemplate(name string) (*template.Template, error) {
 type Server struct {
 	tmpl             *template.Template
 	period           time.Duration
+	poll_time	 time.Time
 	forecastLongTerm *config.ForecastLongTerm
 }
 
@@ -58,16 +59,21 @@ func NewServer(tmpl *template.Template, period time.Duration) *Server {
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		ForecastLongTerm *config.ForecastLongTerm
+		PollTime	 string
 	}{
 		s.forecastLongTerm,
+		s.poll_time.Format(time.Kitchen),
 	}
 	err := s.tmpl.Execute(w, data)
 	utils.ErrorPanic(err)
 }
 
 func (s *Server) poll() {
-	s.forecastLongTerm = fetchJson(fmt.Sprintf("%s?key=%s", forecastURL, os.Getenv("DATAPOINT_KEY")))
-	time.Sleep(s.period)
+	for {
+		s.forecastLongTerm = fetchJson(fmt.Sprintf("%s?key=%s", forecastURL, os.Getenv("DATAPOINT_KEY")))
+		s.poll_time = time.Now()
+		time.Sleep(s.period)
+	}
 }
 
 func fetchJson(url string) *config.ForecastLongTerm {
