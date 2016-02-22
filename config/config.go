@@ -11,6 +11,8 @@ type Codes struct {
 	Visibility map[string]string
 }
 
+// Struct that reflects the long term forecast JSON
+// Easy way to create: http://json2struct.mervine.net/
 type ForecastLongTerm struct {
 	RegionalFcst struct {
 		FcstPeriods struct {
@@ -32,6 +34,7 @@ var (
 	WeatherCodes = &Codes{}
 )
 
+// This loads the codes data to the WeatherCodes struct
 func init() {
 	configYaml, readErr := ioutil.ReadFile("config/codes.yaml")
 	utils.ErrorPanic(readErr)
